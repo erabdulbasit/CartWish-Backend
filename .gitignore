@@ -33,3 +33,5 @@ __tests__/
 *.pid
 *.seed
 *.pid.lock
+
+check-models.js
