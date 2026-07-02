@@ -18,7 +18,7 @@ router.get("/featured", async (req, res) => {
         images: 1,
         reviews: 1,
         stock: 1,
-      }
+      },
     )
       .sort({ "reviews.rate": -1, "reviews.counts": -1 })
       .limit(3);
@@ -35,11 +35,14 @@ router.get("/suggestions", async (req, res) => {
   try {
     const search = req.query.search;
     // Use regular expression to match title or description
-    const regex = new RegExp(search.toLowerCase(), "i");
-    const products = await Products.find({ title: regex })
+
+    const regex = new RegExp("^" + search.toLowerCase());
+    const products = await Products.find({ searchTitle: regex })
       .select("_id title")
       .limit(10); // Limit results to 10 for faster response
+    // .explain("executionStats");
 
+    // console.log("products are : ", products);
     res.json(products);
   } catch (error) {
     console.error(error);
